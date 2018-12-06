@@ -35,15 +35,20 @@ public class DateServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//エンコーディング
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
+		//静的webページよりデータを受け取る
 		String date = request.getParameter("date");
 		
 		if(date.equals("2018-02-08")) {
 			System.out.println("正解");
 		}else {
+			//クライアントにデータを渡す処理
+			request.setAttribute("", "");
+			//ページ遷移
 			request.getRequestDispatcher("viewCalender.jsp").forward(request, response);
 		}
 	}
