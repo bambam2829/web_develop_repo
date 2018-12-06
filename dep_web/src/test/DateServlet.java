@@ -42,7 +42,7 @@ public class DateServlet extends HttpServlet {
 		
 		//静的webページよりデータを受け取る
 		String date = request.getParameter("date");
-		
+		int a;
 		if(date.equals("2018-02-08")) {
 			System.out.println("正解");
 		}else {
