@@ -40,16 +40,16 @@ public class DateServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 		
-		//静的webページよりデータを受け取る
+		//静的webページよりデータ取得
 		String date = request.getParameter("date");
-		int a;
+		
 		if(date.equals("2018-02-08")) {
 			System.out.println("正解");
 		}else {
 			//クライアントにデータを渡す処理
 			request.setAttribute("", "");
 			//ページ遷移
-			request.getRequestDispatcher("viewCalender.jsp").forward(request, response);
+			request.getRequestDispatcher("jsp/viewCalender.jsp").forward(request, response);
 		}
 	}
 
