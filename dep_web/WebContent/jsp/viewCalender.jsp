@@ -11,7 +11,7 @@
 <body>
 	<h1>誕生日選択</h1>
 	<form action="../DateServlet" method="post">
-		<input type="date" value="2018-01-01"  name="date"> <br> <input
+		<input type="date" value="2018-01-01" name="date"> <br> <input
 			type="submit" value="送信">
 	</form>
 
