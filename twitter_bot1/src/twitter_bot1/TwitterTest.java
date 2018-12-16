@@ -3,6 +3,10 @@ package twitter_bot1;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,32 +26,40 @@ public class TwitterTest {
 	public static void main(String[] args) throws IOException {
 		try {
 
-			Document document = Jsoup.connect("http://news.livedoor.com/straight_news/").get();
+			UseTwitter ut = new UseTwitter();
+			List<String> newsList = new ArrayList<>();
 
-			// Elements elements = document.select("a[href]");
-			Elements elements = document.getElementsByClass("hasImg").select("a[href]");
-			for (Element element : elements) {
-				String url = element.toString();
-				StringBuilder sb = new StringBuilder();
-				sb.append(url);
-				url = sb.substring(sb.indexOf("<a href=\""), sb.indexOf("\" "));
-				url = url.replace("<a href=\"", "");
-				System.out.println(url);
-				UseTwitter ut = new UseTwitter();
-				ut.tweet(url);
-				Thread.sleep(600000);
+			// 対象ライブドアニュース
+			String url = "http://news.livedoor.com/straight_news/";
+			String className = "hasImg";
+			// ツイートするトピックスのURLを取得
+			newsList = ut.topixUrlList(url, className);
+
+			// 対象ヤフーニュース
+			url = "https://news.yahoo.co.jp/ranking";
+			className = "listFeedWrap";
+			// ツイートするトピックスのURLを取得
+			newsList = ut.topixUrlList(url, className);
+
+			// リスト内シャッフル
+			Collections.shuffle(newsList);
+
+			int newsCnt = 0;
+			// トピックスを一定間隔でツイート（MAX12）
+			for (String list : newsList) {
+				if (newsCnt <= 12) {
+					ut.tweet(list);
+					// Thread.sleep(3600000);
+					newsCnt++;
+				} else {
+					break;
+				}
 			}
 
-			// 個人的によく使うメソッド集約
-			// UseTwitter ut = new UseTwitter();
-			// ut.tweet("");
 
 		} catch (TwitterException e) {
 			e.printStackTrace();
-		}catch(InterruptedException e) {
-			e.printStackTrace();
 		}
-
 	}
 
 }
