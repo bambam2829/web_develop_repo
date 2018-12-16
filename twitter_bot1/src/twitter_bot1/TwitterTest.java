@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.catalina.User;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,6 +16,7 @@ import org.jsoup.select.Elements;
 import com.sun.beans.util.Cache;
 
 import beans.UseTwitter;
+import twitter4j.IDs;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -55,7 +57,6 @@ public class TwitterTest {
 					break;
 				}
 			}
-
 
 		} catch (TwitterException e) {
 			e.printStackTrace();

@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import twitter4j.IDs;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -48,6 +49,44 @@ public class UseTwitter {
 			list.add(url);
 		}
 		return list;
+	}
+	public void mutualFolow() throws TwitterException {
+		Twitter tw = TwitterFactory.getSingleton();
+		// 自動リフォロー
+		List<Long> followersList = new ArrayList<Long>();
+		List<Long> friendsList = new ArrayList<Long>();
+
+		// フォロワーリスト取得
+		long cursor = -1L;
+		while (true) {
+			IDs followers = tw.getFollowersIDs(cursor);
+			long[] ids = followers.getIDs();
+			if (0 == ids.length)
+				break;
+			for (int i = 0; i < ids.length; i++) {
+				followersList.add(ids[i]);
+			}
+			cursor = followers.getNextCursor();
+		}
+		// フレンドリスト取得
+		cursor = -1L;
+		while (true) {
+			IDs friends = tw.getFriendsIDs(cursor);
+			long[] ids = friends.getIDs();
+			if (0 == ids.length)
+				break;
+			for (int i = 0; i < ids.length; i++) {
+				friendsList.add(ids[i]);
+			}
+			cursor = friends.getNextCursor();
+		}
+
+		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
+		for (Long userId : followersList) {
+			if (!friendsList.contains(userId)) {
+				tw.createFriendship(userId);
+			}
+		}
 	}
 
 }
