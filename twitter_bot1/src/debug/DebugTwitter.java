@@ -1,4 +1,4 @@
-package twitter_bot1;
+package debug;
 
 import java.io.IOException;
 import java.util.ArrayList;
