@@ -11,7 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class DebugTwitter {
-
+	
 	public static void main(String[] args) {
 		List<String> list = new ArrayList<>();
 

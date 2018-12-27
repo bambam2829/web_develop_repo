@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: twitter_bot1.TwitterTest
+Main-Class: twitter_bot1/TwitterTest
+
 
