@@ -18,6 +18,12 @@ import twitter4j.TwitterFactory;
 
 public class UseTwitter {
 
+	Twitter tw = TwitterFactory.getSingleton();
+	// フォロワーリスト
+	List<Long> followersList = new ArrayList<Long>();
+	// フォローリスト
+	List<Long> friendsList = new ArrayList<Long>();
+
 	public void tweet(String str) throws TwitterException {
 
 		// ツイート機能
@@ -32,7 +38,9 @@ public class UseTwitter {
 
 	}
 
-	public List<String> topixUrlList(String targetUrl, String className) throws IOException, TwitterException {
+	// トピックスのURLを返す処理
+	public List<String> topixList(String siteName, String targetUrl, String className)
+			throws IOException, TwitterException {
 
 		List<String> list = new ArrayList<>();
 
@@ -40,21 +48,52 @@ public class UseTwitter {
 		Document document = Jsoup.connect(targetUrl).get();
 		// サイトの取得する情報を抜粋
 		Elements elements = document.getElementsByClass(className).select("a[href]");
+		String url;
+		String title;
 		for (Element element : elements) {
-			String url = element.toString();
+			url = element.toString();
 			StringBuilder sb = new StringBuilder();
 			sb.append(url);
 			url = sb.substring(sb.indexOf("<a href=\""), sb.indexOf("\" "));
 			url = url.replace("<a href=\"", "");
-			list.add(url);
+			switch (siteName) {
+			case "livedoor":
+				title = sb.substring(sb.indexOf("<h3 class=\"straightTtl\">"), sb.indexOf("</h3>"));
+				title = title.replace("<h3 class=\"straightTtl\">", "");
+				list.add(title + url);
+			case "yahoo":
+				title = sb.substring(sb.indexOf(""), sb.indexOf(""));
+				title = title.replace("", "");
+				list.add(title + url);
+			case "asahi":
+				title = sb.substring(sb.indexOf(""), sb.indexOf(""));
+				title = title.replace("", "");
+				list.add(title + url);
+			}
 		}
 		return list;
 	}
-	public void mutualFolow() throws TwitterException {
-		Twitter tw = TwitterFactory.getSingleton();
-		// 自動リフォロー
-		List<Long> followersList = new ArrayList<Long>();
-		List<Long> friendsList = new ArrayList<Long>();
+
+	public List<String> topixTitleList(String targetUrl, String className) throws IOException, TwitterException {
+
+		List<String> list = new ArrayList<>();
+
+		// 対象サイトの情報取得
+		Document document = Jsoup.connect(targetUrl).get();
+		// サイトの取得する情報を抜粋
+		Elements elements = document.getElementsByClass(className);
+		for (Element element : elements) {
+			String title = element.toString();
+			StringBuilder sb = new StringBuilder();
+			sb.append(title);
+			title = sb.substring(sb.indexOf("<h3 class=\"straightTtl\">"), sb.indexOf("</h3>"));
+			title = title.replace("<h3 class=\"straightTtl\">", "");
+			list.add(title);
+		}
+		return list;
+	}
+
+	public void setFollowersListAndFriendsList() throws TwitterException {
 
 		// フォロワーリスト取得
 		long cursor = -1L;
@@ -64,7 +103,7 @@ public class UseTwitter {
 			if (0 == ids.length)
 				break;
 			for (int i = 0; i < ids.length; i++) {
-				followersList.add(ids[i]);
+				this.followersList.add(ids[i]);
 			}
 			cursor = followers.getNextCursor();
 		}
@@ -76,15 +115,32 @@ public class UseTwitter {
 			if (0 == ids.length)
 				break;
 			for (int i = 0; i < ids.length; i++) {
-				friendsList.add(ids[i]);
+				this.friendsList.add(ids[i]);
 			}
 			cursor = friends.getNextCursor();
 		}
+	}
 
+	// 相互フォローする処理
+	public void mutualFolow() throws TwitterException {
+
+		setFollowersListAndFriendsList();
 		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
-		for (Long userId : followersList) {
+		for (Long userId : this.followersList) {
 			if (!friendsList.contains(userId)) {
 				tw.createFriendship(userId);
+			}
+		}
+
+	}
+
+	// フォローが返されない場合リムーブ
+	public void removeFolow() throws TwitterException {
+
+		setFollowersListAndFriendsList();
+		for (Long userId : friendsList) {
+			if (!followersList.contains(userId)) {
+				tw.destroyFriendship(userId);
 			}
 		}
 	}
