@@ -53,22 +53,28 @@ public class UseTwitter {
 			String title;
 			url = element.toString();
 			title = element.toString();
-			url = url.substring(url.indexOf("<a href=\""), url.indexOf("\" "));
-			url = url.replace("<a href=\"", "");
 			switch (siteName) {
 			case "livedoor":
+				url = url.substring(url.indexOf("<a href=\""), url.indexOf("\" "));
+				url = url.replace("<a href=\"", "");
 				title = title.substring(title.indexOf("<h3 class=\"straightTtl\">"), title.indexOf("</h3>"));
 				title = title.replace("<h3 class=\"straightTtl\">", "");
 				list.add(title + url);
 				break;
-			case "yahoo":
-				title = title.substring(title.indexOf(""), title.indexOf(""));
-				title = title.replace("", "");
-				list.add(title + url);
+			case "life hacker":
+				url = url.substring(url.indexOf("<a href=\""), url.indexOf("\">"));
+				url = url.replace("<a href=\"", "");
+				title = title.substring(title.indexOf("<a href=\"" + url + "\">"), title.indexOf("</a>"));
+				title = title.replace("<a href=\"" + url + "\">", "");
+				title = title.replace("</a>", "");
+				list.add(title + "https://www.lifehacker.jp"+url);
 				break;
 			case "asahi":
-				title = title.substring(title.indexOf(""), title.indexOf(""));
-				title = title.replace("", "");
+				url = url.substring(url.indexOf("<a href=\""), url.indexOf("\">"));
+				url = url.replace("<a href=\"", "");
+				title = title.substring(title.indexOf("<a href=\"" + url + "\">"), title.indexOf("</a>"));
+				title = title.replace("<a href=\"" + url + "\">", "");
+				title = title.replace("</a>", "");
 				list.add(title + url);
 				break;
 			}
@@ -76,24 +82,6 @@ public class UseTwitter {
 		return list;
 	}
 
-	public List<String> topixTitleList(String targetUrl, String className) throws IOException, TwitterException {
-
-		List<String> list = new ArrayList<>();
-
-		// 対象サイトの情報取得
-		Document document = Jsoup.connect(targetUrl).get();
-		// サイトの取得する情報を抜粋
-		Elements elements = document.getElementsByClass(className);
-		for (Element element : elements) {
-			String title = element.toString();
-			StringBuilder sb = new StringBuilder();
-			sb.append(title);
-			title = sb.substring(sb.indexOf("<h3 class=\"straightTtl\">"), sb.indexOf("</h3>"));
-			title = title.replace("<h3 class=\"straightTtl\">", "");
-			list.add(title);
-		}
-		return list;
-	}
 
 	public void setFollowersListAndFriendsList() throws TwitterException {
 
@@ -124,7 +112,7 @@ public class UseTwitter {
 	}
 
 	// 相互フォローする処理
-	public void mutualFolow() throws TwitterException {
+	public void synchroFolows() throws TwitterException {
 
 		setFollowersListAndFriendsList();
 		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
@@ -137,7 +125,7 @@ public class UseTwitter {
 	}
 
 	// フォローが返されない場合リムーブ
-	public void removeFolow() throws TwitterException {
+	public void removeFolows() throws TwitterException {
 
 		setFollowersListAndFriendsList();
 		for (Long userId : friendsList) {

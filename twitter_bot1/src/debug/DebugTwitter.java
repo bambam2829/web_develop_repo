@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.NodeList;
 
 import beans.UseTwitter;
 
@@ -20,15 +21,14 @@ public class DebugTwitter {
 		try {
 
 			
-			String url = "http://news.livedoor.com/straight_news/";
-			String className = "hasImg";
-			String siteName = "livedoor";
+			String url = "https://www.lifehacker.jp/feature/lh_tools/";
+			String className = "lh-summary-title";
+			String siteName = "life hacker";
 			
-			UseTwitter us = new UseTwitter();
-			list = us.topixList(siteName, url, className);
+			UseTwitter ut = new UseTwitter();
+			list = ut.topixList(siteName, url, className);
+			list.forEach(topxlist -> System.out.println(topxlist));
 
-			
-			list.forEach(toplist -> System.out.println(toplist));
 			
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック

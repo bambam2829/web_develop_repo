@@ -35,25 +35,25 @@ public class TwitterTest {
 			// ツイートするトピックスを取得
 			toplist = ut.topixList("livedoor", url1, className1);
 
-			// 対象ヤフーニュース
-			String url2 = "https://news.yahoo.co.jp/ranking";
-			String className2 = "listFeedWrap";
+			// 対象ライフハッカー
+			String url2 = "https://www.lifehacker.jp/feature/lh_tools/";
+			String className2 = "lh-summary-title";
 			// ツイートするトピックスを取得
-			// newsList = ut.topixUrlList(url2, className);
+			toplist.addAll(ut.topixList("life hacker",url2, className2));
 
 			// 対象朝日新聞
-			String url3 = "https://www.asahi.com/news/?iref=comtop_gnavi";
-			String className3 = "national";
+			String url3 = "http://www.asahi.com/whatsnew/ranking/";
+			String className3 = "Ranking";
 			// ツイートするトピックスを取得
-			// newsList = ut.topixUrlList(url2, className);
+			toplist.addAll(ut.topixList("asahi",url3, className3));
 			
 			// リスト内シャッフル
-			// Collections.shuffle(urlList);
+			Collections.shuffle(toplist);
 
 			int newsCnt = 0;
 			// トピックスを一定間隔でツイート（MAX12）
 			for (String top : toplist) {
-				if (newsCnt <= 2) {
+				if (newsCnt <= 10) {
 					ut.tweet(top);
 					newsCnt++;
 					// Thread.sleep(3600000);
@@ -61,8 +61,9 @@ public class TwitterTest {
 					break;
 				}
 			}
-			ut.mutualFolow();
-			ut.removeFolow();
+			
+			//相互フォロー
+			ut.synchroFolows();
 
 		} catch (TwitterException e) {
 			e.printStackTrace();
