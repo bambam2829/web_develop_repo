@@ -20,9 +20,9 @@ public class UseTwitter {
 
 	Twitter tw = TwitterFactory.getSingleton();
 	// フォロワーリスト
-	static List<Long> followersList = new ArrayList<Long>();
+	List<Long> followersList = new ArrayList<Long>();
 	// フォローリスト
-	static List<Long> friendsList = new ArrayList<Long>();
+	List<Long> friendsList = new ArrayList<Long>();
 
 	public void tweet(String str) throws TwitterException {
 
