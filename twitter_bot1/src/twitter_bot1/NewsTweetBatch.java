@@ -66,7 +66,8 @@ public class NewsTweetBatch {
 
 
 			// 相互フォロー更新
-			//ut.synchroFolows();
+			UseTwitter folow = new UseTwitter();
+			folow.synchroFolows();
 
 		} catch (TwitterException | InterruptedException e) {
 			e.printStackTrace();
