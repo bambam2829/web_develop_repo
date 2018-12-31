@@ -20,9 +20,9 @@ public class UseTwitter {
 
 	Twitter tw = TwitterFactory.getSingleton();
 	// フォロワーリスト
-	List<Long> followersList = new ArrayList<Long>();
+	static List<Long> followersList = new ArrayList<Long>();
 	// フォローリスト
-	List<Long> friendsList = new ArrayList<Long>();
+	static List<Long> friendsList = new ArrayList<Long>();
 
 	public void tweet(String str) throws TwitterException {
 
@@ -114,7 +114,7 @@ public class UseTwitter {
 	// 相互フォローする処理
 	public void synchroFolows() throws TwitterException {
 
-		setFollowersListAndFriendsList();
+		this.setFollowersListAndFriendsList();
 		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
 		for (Long userId : this.followersList) {
 			if (!friendsList.contains(userId)) {
@@ -127,7 +127,7 @@ public class UseTwitter {
 	// フォローが返されない場合リムーブ
 	public void removeFolows() throws TwitterException {
 
-		setFollowersListAndFriendsList();
+		this.setFollowersListAndFriendsList();
 		for (Long userId : friendsList) {
 			if (!followersList.contains(userId)) {
 				tw.destroyFriendship(userId);
