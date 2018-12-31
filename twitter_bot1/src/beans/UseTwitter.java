@@ -48,25 +48,24 @@ public class UseTwitter {
 		Document document = Jsoup.connect(targetUrl).get();
 		// サイトの取得する情報を抜粋
 		Elements elements = document.getElementsByClass(className).select("a[href]");
-		String url;
-		String title;
 		for (Element element : elements) {
+			String url;
+			String title;
 			url = element.toString();
-			StringBuilder sb = new StringBuilder();
-			sb.append(url);
-			url = sb.substring(sb.indexOf("<a href=\""), sb.indexOf("\" "));
+			title = element.toString();
+			url = url.substring(url.indexOf("<a href=\""), url.indexOf("\" "));
 			url = url.replace("<a href=\"", "");
 			switch (siteName) {
 			case "livedoor":
-				title = sb.substring(sb.indexOf("<h3 class=\"straightTtl\">"), sb.indexOf("</h3>"));
+				title = title.substring(title.indexOf("<h3 class=\"straightTtl\">"), title.indexOf("</h3>"));
 				title = title.replace("<h3 class=\"straightTtl\">", "");
 				list.add(title + url);
 			case "yahoo":
-				title = sb.substring(sb.indexOf(""), sb.indexOf(""));
+				title = title.substring(title.indexOf(""), title.indexOf(""));
 				title = title.replace("", "");
 				list.add(title + url);
 			case "asahi":
-				title = sb.substring(sb.indexOf(""), sb.indexOf(""));
+				title = title.substring(title.indexOf(""), title.indexOf(""));
 				title = title.replace("", "");
 				list.add(title + url);
 			}
