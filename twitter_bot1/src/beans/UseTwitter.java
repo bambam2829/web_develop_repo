@@ -60,14 +60,17 @@ public class UseTwitter {
 				title = title.substring(title.indexOf("<h3 class=\"straightTtl\">"), title.indexOf("</h3>"));
 				title = title.replace("<h3 class=\"straightTtl\">", "");
 				list.add(title + url);
+				break;
 			case "yahoo":
 				title = title.substring(title.indexOf(""), title.indexOf(""));
 				title = title.replace("", "");
 				list.add(title + url);
+				break;
 			case "asahi":
 				title = title.substring(title.indexOf(""), title.indexOf(""));
 				title = title.replace("", "");
 				list.add(title + url);
+				break;
 			}
 		}
 		return list;
