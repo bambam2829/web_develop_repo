@@ -21,18 +21,10 @@ public class DebugTwitter {
 		try {
 
 			
-			String url = "https://www.lifehacker.jp/feature/lh_tools/";
-			String className = "lh-summary-title";
-			String siteName = "life hacker";
-			
 			UseTwitter ut = new UseTwitter();
-			list = ut.topixList(siteName, url, className);
-			list.forEach(topxlist -> System.out.println(topxlist));
+			ut.synchroFolows();
 
 			
-		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
