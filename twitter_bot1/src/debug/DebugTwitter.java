@@ -22,7 +22,8 @@ public class DebugTwitter {
 
 			
 			UseTwitter ut = new UseTwitter();
-			ut.synchroFolows();
+			ut.syncFolows();
+			ut.removeFolows();
 
 			
 		} catch (RuntimeException e) {

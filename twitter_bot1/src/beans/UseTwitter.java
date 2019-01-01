@@ -20,9 +20,11 @@ public class UseTwitter {
 
 	Twitter tw = TwitterFactory.getSingleton();
 	// フォロワーリスト
-	List<Long> followersList = new ArrayList<Long>();
+	List<Long> followersList = new ArrayList<>();
 	// フォローリスト
-	List<Long> friendsList = new ArrayList<Long>();
+	List<Long> friendsList = new ArrayList<>();
+	//フォローのリクエストリスト
+	List<Long> requestList = new ArrayList<>();
 
 	public void tweet(String str) throws TwitterException {
 
@@ -92,8 +94,8 @@ public class UseTwitter {
 			long[] ids = followers.getIDs();
 			if (0 == ids.length)
 				break;
-			for (int i = 0; i < ids.length; i++) {
-				this.followersList.add(ids[i]);
+			for (Long id : ids) {
+				this.followersList.add(id);
 			}
 			cursor = followers.getNextCursor();
 		}
@@ -104,20 +106,36 @@ public class UseTwitter {
 			long[] ids = friends.getIDs();
 			if (0 == ids.length)
 				break;
-			for (int i = 0; i < ids.length; i++) {
-				this.friendsList.add(ids[i]);
+			for (Long id : ids) {
+				this.friendsList.add(id);
 			}
 			cursor = friends.getNextCursor();
 		}
 	}
+	
+	public void folowRequestList() throws TwitterException {
+		// フレンドリスト取得
+		long cursor = -1L;
+				while (true) {
+					IDs folowRequest = tw.getIncomingFriendships(cursor);
+					long[] ids = folowRequest.getIDs();
+					if (0 == ids.length)
+						break;
+					for (Long id : ids) {
+						this.requestList.add(id);
+					}
+					cursor = folowRequest.getNextCursor();
+				}
+	}
 
 	// 相互フォローする処理
-	public void synchroFolows() throws TwitterException {
+	public void syncFolows() throws TwitterException {
 
 		this.setFollowersListAndFriendsList();
+		this.folowRequestList();
 		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
 		for (Long userId : this.followersList) {
-			if (!friendsList.contains(userId)) {
+			if (!(this.friendsList.contains(userId))&&!(this.requestList.contains(userId))) {
 				tw.createFriendship(userId);
 			}
 		}
@@ -128,8 +146,8 @@ public class UseTwitter {
 	public void removeFolows() throws TwitterException {
 
 		this.setFollowersListAndFriendsList();
-		for (Long userId : friendsList) {
-			if (!followersList.contains(userId)) {
+		for (Long userId : this.friendsList) {
+			if (!(followersList.contains(userId))) {
 				tw.destroyFriendship(userId);
 			}
 		}
