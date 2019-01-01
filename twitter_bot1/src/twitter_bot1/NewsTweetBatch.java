@@ -61,14 +61,14 @@ public class NewsTweetBatch {
 					newsCnt++;
 				}
 				System.out.println("３回ツイートしました。");
-				Thread.sleep(3600000);
+				//Thread.sleep(3600000);
 			}
 
 
 			// 相互フォロー更新
 			ut.syncFolows();
 
-		} catch (TwitterException | InterruptedException e) {
+		} catch (TwitterException e) {
 			e.printStackTrace();
 		}
 	}
