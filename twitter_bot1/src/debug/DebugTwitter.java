@@ -34,7 +34,7 @@ public class DebugTwitter {
 				QueryResult result = twitter.search(query);
 				for (Status status : result.getTweets()) {
 					// twitter.createFriendship(status.get);
-					System.out.println(status.getUser().getScreenName() + "をフォローしました。"+folowCnt);
+					System.out.println(status.getUser().getScreenName() + "をフォローしました。");
 					folowCnt++;
 				}
 				if (result.hasNext()) {
