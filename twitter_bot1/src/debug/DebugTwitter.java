@@ -21,28 +21,26 @@ import twitter4j.TwitterFactory;
 public class DebugTwitter {
 
 	public static void main(String[] args) {
-		List<String> list = new ArrayList<>();
 
 		try {
 
 			Twitter twitter = TwitterFactory.getSingleton();
-			Query query = new Query("相互");
-			QueryResult result = twitter.search(query);
+			Query query = new Query();
+			query.setQuery("相互");
+			query.setCount(10);
 			int folowCnt = 1;
-			for (Status status : result.getTweets()) {
-				// twitter.createFriendship(status.get);
-				System.out.println(status.getUser().getScreenName() + "をフォローしました。");
-				folowCnt++;
-			}
+
 			while (folowCnt <= 50) {
+				QueryResult result = twitter.search(query);
+				for (Status status : result.getTweets()) {
+					// twitter.createFriendship(status.get);
+					System.out.println(status.getUser().getScreenName() + "をフォローしました。"+folowCnt);
+					folowCnt++;
+				}
 				if (result.hasNext()) {
 					query = result.nextQuery();
-					result = twitter.search(query);
-					for (Status status : result.getTweets()) {
-						// twitter.createFriendship(status.get);
-						System.out.println(status.getUser().getScreenName() + "をフォローしました。");
-						folowCnt++;
-					}
+				}else {
+					break;
 				}
 			}
 

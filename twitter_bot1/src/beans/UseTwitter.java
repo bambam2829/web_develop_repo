@@ -10,6 +10,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import twitter4j.IDs;
+import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -23,7 +25,7 @@ public class UseTwitter {
 	List<Long> followersList = new ArrayList<>();
 	// フォローリスト
 	List<Long> friendsList = new ArrayList<>();
-	//フォローのリクエストリスト
+	// フォローのリクエストリスト
 	List<Long> requestList = new ArrayList<>();
 
 	public void tweet(String str) throws TwitterException {
@@ -69,7 +71,7 @@ public class UseTwitter {
 				title = title.substring(title.indexOf("<a href=\"" + url + "\">"), title.indexOf("</a>"));
 				title = title.replace("<a href=\"" + url + "\">", "");
 				title = title.replace("</a>", "");
-				list.add(title + "https://www.lifehacker.jp"+url);
+				list.add(title + "https://www.lifehacker.jp" + url);
 				break;
 			case "asahi":
 				url = url.substring(url.indexOf("<a href=\""), url.indexOf("\">"));
@@ -83,7 +85,6 @@ public class UseTwitter {
 		}
 		return list;
 	}
-
 
 	public void setFollowersListAndFriendsList() throws TwitterException {
 
@@ -112,30 +113,30 @@ public class UseTwitter {
 			cursor = friends.getNextCursor();
 		}
 	}
-	
-	public void folowRequestList() throws TwitterException {
+
+	public void followRequestList() throws TwitterException {
 		// フレンドリスト取得
 		long cursor = -1L;
-				while (true) {
-					IDs folowRequest = tw.getIncomingFriendships(cursor);
-					long[] ids = folowRequest.getIDs();
-					if (0 == ids.length)
-						break;
-					for (Long id : ids) {
-						this.requestList.add(id);
-					}
-					cursor = folowRequest.getNextCursor();
-				}
+		while (true) {
+			IDs folowRequest = tw.getIncomingFriendships(cursor);
+			long[] ids = folowRequest.getIDs();
+			if (0 == ids.length)
+				break;
+			for (Long id : ids) {
+				this.requestList.add(id);
+			}
+			cursor = folowRequest.getNextCursor();
+		}
 	}
 
 	// 相互フォローする処理
-	public void syncFolows() throws TwitterException {
+	public void syncFollows() throws TwitterException {
 
 		this.setFollowersListAndFriendsList();
-		this.folowRequestList();
+		this.followRequestList();
 		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
 		for (Long userId : this.followersList) {
-			if (!(this.friendsList.contains(userId))&&!(this.requestList.contains(userId))) {
+			if (!(this.friendsList.contains(userId)) && !(this.requestList.contains(userId))) {
 				tw.createFriendship(userId);
 			}
 		}
@@ -143,7 +144,7 @@ public class UseTwitter {
 	}
 
 	// フォローが返されない場合リムーブ
-	public void removeFolows() throws TwitterException {
+	public void removeFollows() throws TwitterException {
 
 		this.setFollowersListAndFriendsList();
 		for (Long userId : this.friendsList) {
@@ -151,6 +152,31 @@ public class UseTwitter {
 				tw.destroyFriendship(userId);
 			}
 		}
+	}
+
+	// 関連ワードをつぶやいているユーザ取得
+	public List<String> findKeyUser(String keyword, int maxSet) throws TwitterException {
+		List<String> userList = new ArrayList<>();
+		Twitter twitter = TwitterFactory.getSingleton();
+		Query query = new Query();
+		query.setQuery(keyword);
+		query.setCount(10);
+		int folowCnt = 1;
+
+		while (folowCnt <= maxSet) {
+			QueryResult result = twitter.search(query);
+			for (Status status : result.getTweets()) {
+				userList.add(status.getUser().getScreenName());
+				folowCnt++;
+			}
+			if (result.hasNext()) {
+				query = result.nextQuery();
+			} else {
+				break;
+			}
+		}
+		return userList;
+
 	}
 
 }
