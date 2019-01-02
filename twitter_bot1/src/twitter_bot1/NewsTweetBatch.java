@@ -18,7 +18,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.sun.javafx.util.Logging;
 
 import beans.UseTwitter;
 import twitter4j.IDs;
@@ -31,7 +30,7 @@ import twitter4j.TwitterFactory;
 public class NewsTweetBatch {
 
 	public static void main(String[] args) throws IOException {
-		final Logger logger = Logger.getLogger(Logging.class.getName());
+		final Logger logger = Logger.getLogger(NewsTweetBatch.class.getName());
 		  final String filePath = "/var/log/tweet_batch.log";
 		try {
 
