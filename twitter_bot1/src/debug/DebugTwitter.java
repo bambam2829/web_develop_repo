@@ -24,25 +24,13 @@ public class DebugTwitter {
 
 		try {
 
-			Twitter twitter = TwitterFactory.getSingleton();
-			Query query = new Query();
-			query.setQuery("相互");
-			query.setCount(10);
-			int folowCnt = 1;
-
-			while (folowCnt <= 50) {
-				QueryResult result = twitter.search(query);
-				for (Status status : result.getTweets()) {
-					// twitter.createFriendship(status.get);
-					System.out.println(status.getUser().getScreenName() + "をフォローしました。");
-					folowCnt++;
-				}
-				if (result.hasNext()) {
-					query = result.nextQuery();
-				}else {
-					break;
-				}
-			}
+			List<String> toplist;
+			UseTwitter ut = new UseTwitter();
+			//ロケットニュース
+			String url4 = "https://rocketnews24.com/";
+			String className4 = "entry-title";
+			toplist = ut.topixList("roket", url4, className4);
+			toplist.forEach(tp -> System.out.println(tp));
 
 		} catch (RuntimeException e) {
 			e.printStackTrace();

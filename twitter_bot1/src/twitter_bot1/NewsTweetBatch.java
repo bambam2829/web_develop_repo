@@ -63,6 +63,10 @@ public class NewsTweetBatch {
 			// ツイートするトピックスを取得
 			toplist.addAll(ut.topixList("asahi", url3, className3));
 
+			//ロケットニュース
+			String url4 = "https://rocketnews24.com/";
+			String className4 = "entry-title";
+			toplist.addAll(ut.topixList("roket", url4, className4));
 			// リスト内シャッフル
 			Collections.shuffle(toplist);
 
@@ -70,7 +74,7 @@ public class NewsTweetBatch {
 			//30分間隔でツイート
 			for (int i = 0; i < 48; i++) {
 				for (int j = 0; j < 2; j++) {
-					logger.info("ツイートを２回します。");
+					logger.info("ツイートします。");
 					ut.tweet(toplist.get(newsCnt));
 					newsCnt++;
 				}

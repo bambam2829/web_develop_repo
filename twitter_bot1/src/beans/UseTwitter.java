@@ -81,6 +81,13 @@ public class UseTwitter {
 				title = title.replace("</a>", "");
 				list.add(title + url);
 				break;
+			case "roket":
+				url = url.substring(url.indexOf("<a href=\""), url.indexOf("\" "));
+				url = url.replace("<a href=\"", "");
+				title = title.substring(title.indexOf("itemprop=\"url\">"), title.indexOf("</a>"));
+				title = title.replace("itemprop=\"url\">","");
+				title = title.replace("</a>","");
+				list.add(title + url);
 			}
 		}
 		return list;
