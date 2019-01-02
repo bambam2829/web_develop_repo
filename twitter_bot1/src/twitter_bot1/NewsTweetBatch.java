@@ -87,9 +87,9 @@ public class NewsTweetBatch {
 			ut.syncFollows();
 
 		} catch (TwitterException | InterruptedException e) {
-			logger.info(e.getStackTrace().toString());
+			logger.log(Level.INFO, "例外のスローを捕捉", e);
 		}catch(IOException e) {
-			logger.info(e.getStackTrace().toString());
+			logger.log(Level.INFO, "例外のスローを捕捉", e);
 		}
 	}
 
