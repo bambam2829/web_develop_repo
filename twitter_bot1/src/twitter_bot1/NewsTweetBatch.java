@@ -61,7 +61,7 @@ public class NewsTweetBatch {
 					newsCnt++;
 				}
 				System.out.println("３回ツイートしました。");
-				Thread.sleep(3600000);
+				Thread.sleep(30*60*1000);
 			}
 
 
