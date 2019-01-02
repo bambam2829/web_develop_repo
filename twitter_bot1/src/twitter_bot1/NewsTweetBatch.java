@@ -58,8 +58,6 @@ public class NewsTweetBatch {
 			for (int i = 0; i < 48; i++) {
 				for (int j = 0; j < 3; j++) {
 					ut.tweet(toplist.get(newsCnt));
-					// 相互フォロー更新
-					ut.syncFollows();
 					Thread.sleep(60*1000);
 					newsCnt++;
 				}
@@ -67,7 +65,8 @@ public class NewsTweetBatch {
 				Thread.sleep(27*60*1000);
 			}
 
-			
+			// 相互フォロー更新
+			ut.syncFollows();
 
 		} catch (TwitterException | InterruptedException e) {
 			e.printStackTrace();
