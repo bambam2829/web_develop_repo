@@ -58,10 +58,11 @@ public class NewsTweetBatch {
 			for (int i = 0; i < 48; i++) {
 				for (int j = 0; j < 3; j++) {
 					ut.tweet(toplist.get(newsCnt));
+					Thread.sleep(60*1000);
 					newsCnt++;
 				}
 				System.out.println("３回ツイートしました。");
-				Thread.sleep(30*60*1000);
+				Thread.sleep(27*60*1000);
 			}
 
 
