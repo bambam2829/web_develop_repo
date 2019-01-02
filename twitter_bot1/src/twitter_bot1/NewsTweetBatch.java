@@ -55,20 +55,20 @@ public class NewsTweetBatch {
 
 			int newsCnt = 0;
 			//30分間隔でツイート
-			for (int i = 0; i < 1; i++) {
+			for (int i = 0; i < 48; i++) {
 				for (int j = 0; j < 3; j++) {
 					ut.tweet(toplist.get(newsCnt));
 					newsCnt++;
 				}
 				System.out.println("３回ツイートしました。");
-				//Thread.sleep(3600000);
+				Thread.sleep(3600000);
 			}
 
 
 			// 相互フォロー更新
 			ut.syncFolows();
 
-		} catch (TwitterException e) {
+		} catch (TwitterException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
