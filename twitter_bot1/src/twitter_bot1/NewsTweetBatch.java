@@ -8,11 +8,17 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.sun.javafx.util.Logging;
 
 import beans.UseTwitter;
 import twitter4j.IDs;
@@ -25,9 +31,18 @@ import twitter4j.TwitterFactory;
 public class NewsTweetBatch {
 
 	public static void main(String[] args) throws IOException {
-			
+		final Logger logger = Logger.getLogger(Logging.class.getName());
+		  final String filePath = "/var/log/tweet_batch.log";
 		try {
 
+			// Handlerを生成しloggerに登録
+            FileHandler fHandler = new FileHandler(filePath, true);
+            fHandler.setFormatter(new SimpleFormatter());
+            logger.addHandler(fHandler);
+ 
+            // ログレベルの設定
+            logger.setLevel(Level.INFO);
+            
 			System.setOut(new PrintStream(new FileOutputStream("newsTweetBatch.log")));
 			UseTwitter ut = new UseTwitter();
 			List<String> toplist;
