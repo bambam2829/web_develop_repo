@@ -20,7 +20,6 @@ import twitter4j.TwitterFactory;
 
 public class UseTwitter {
 
-	Twitter tw = TwitterFactory.getSingleton();
 	// フォロワーリスト
 	List<Long> followersList = new ArrayList<>();
 	// フォローリスト
@@ -85,8 +84,8 @@ public class UseTwitter {
 				url = url.substring(url.indexOf("<a href=\""), url.indexOf("\" "));
 				url = url.replace("<a href=\"", "");
 				title = title.substring(title.indexOf("itemprop=\"url\">"), title.indexOf("</a>"));
-				title = title.replace("itemprop=\"url\">","");
-				title = title.replace("</a>","");
+				title = title.replace("itemprop=\"url\">", "");
+				title = title.replace("</a>", "");
 				list.add(title + url);
 			}
 		}
@@ -95,6 +94,7 @@ public class UseTwitter {
 
 	public void setFollowersListAndFriendsList() throws TwitterException {
 
+		Twitter tw = TwitterFactory.getSingleton();
 		// フォロワーリスト取得
 		long cursor = -1L;
 		while (true) {
@@ -122,6 +122,7 @@ public class UseTwitter {
 	}
 
 	public void followRequestList() throws TwitterException {
+		Twitter tw = TwitterFactory.getSingleton();
 		// フレンドリスト取得
 		long cursor = -1L;
 		while (true) {
@@ -139,6 +140,7 @@ public class UseTwitter {
 	// 相互フォローする処理
 	public void syncFollows() throws TwitterException {
 
+		Twitter tw = TwitterFactory.getSingleton();
 		this.setFollowersListAndFriendsList();
 		this.followRequestList();
 		// フォロワーリストをループし、1件ごとにフレンド登録されているか確認し、されていなければフレンド登録する。
@@ -153,6 +155,7 @@ public class UseTwitter {
 	// フォローが返されない場合リムーブ
 	public void removeFollows() throws TwitterException {
 
+		Twitter tw = TwitterFactory.getSingleton();
 		this.setFollowersListAndFriendsList();
 		for (Long userId : this.friendsList) {
 			if (!(followersList.contains(userId))) {
