@@ -31,7 +31,7 @@ public class NewsTweetBatch {
 
 	public static void main(String[] args) throws IOException {
 		final Logger logger = Logger.getLogger(NewsTweetBatch.class.getName());
-		  final String filePath = "/var/log/tweet_batch.log";
+		  final String filePath = "/var/log/news_tweet_batch.log";
 		try {
 
 			// Handlerを生成しloggerに登録
@@ -42,7 +42,6 @@ public class NewsTweetBatch {
             // ログレベルの設定
             logger.setLevel(Level.INFO);
             
-			System.setOut(new PrintStream(new FileOutputStream("newsTweetBatch.log")));
 			UseTwitter ut = new UseTwitter();
 			List<String> toplist;
 
@@ -70,14 +69,15 @@ public class NewsTweetBatch {
 			int newsCnt = 0;
 			//30分間隔でツイート
 			for (int i = 0; i < 48; i++) {
-				for (int j = 0; j < 3; j++) {
+				for (int j = 0; j < 2; j++) {
+					logger.info("ツイートを２回します。");
 					ut.tweet(toplist.get(newsCnt));
-					Thread.sleep(60*1000);
 					newsCnt++;
 				}
-				System.out.println("３回ツイートしました。");
-				Thread.sleep(27*60*1000);
+				logger.info("ツイートを２回しました。");
+				Thread.sleep(30*60*1000);
 			}
+			logger.info("ツイートを４８回しました。");
 
 			// 相互フォロー更新
 			ut.syncFollows();
