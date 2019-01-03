@@ -83,8 +83,6 @@ public class NewsTweetBatch {
 			}
 			logger.info("ツイートを４８回しました。");
 
-			// 相互フォロー更新
-			ut.syncFollows();
 
 		} catch (TwitterException | InterruptedException e) {
 			logger.log(Level.INFO, "例外のスローを捕捉", e);
