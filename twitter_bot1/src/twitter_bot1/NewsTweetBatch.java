@@ -72,7 +72,7 @@ public class NewsTweetBatch {
 
 			int newsCnt = 0;
 			//30分間隔でツイート
-			for (int i = 0; i < 48; i++) {
+			for (int i = 0; i < 46; i++) {
 				for (int j = 0; j < 2; j++) {
 					logger.info("ツイートします。");
 					ut.tweet(toplist.get(newsCnt));
